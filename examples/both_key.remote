@@ -1,0 +1,8 @@
+[SSH]
+Hostname: 192.168.1.102
+Username: dylan
+PrivateKey: ~/.ssh/id_rsa
+RemoteDir: ~/direplicate
+
+[LOCAL]
+RemoteDir: /tmp/direplicate
