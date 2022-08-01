@@ -1,8 +1,10 @@
-[SSH]
-Hostname: 192.168.1.102
-Username: dylan
-PrivateKey: ~/.ssh/id_rsa
-RemoteDir: ~/direplicate
+[[REMOTES]]
+type = "SSH"
+hostname = '192.168.1.102'
+username = "dylan"
+private_key = '~/.ssh/id_rsa'
+remote_dir = '~/direplicate'
 
-[LOCAL]
-RemoteDir: /tmp/direplicate
+[[REMOTES]]
+type = "LOCAL"
+remote_dir = '/tmp/direplicate'

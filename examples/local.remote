@@ -1,2 +1,3 @@
-[LOCAL]
-RemoteDir: /tmp/direplicate
+[[REMOTES]]
+type = "LOCAL"
+remote_dir = '/tmp/direplicate'
