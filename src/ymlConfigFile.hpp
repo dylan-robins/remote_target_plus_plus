@@ -13,6 +13,7 @@ namespace fs = std::filesystem;
 
 class ymlConfigFile {
     RemoteConfigVector _remotes;
+    fs::path _configPath;
 
   public:
     ymlConfigFile(const fs::path &configFile);

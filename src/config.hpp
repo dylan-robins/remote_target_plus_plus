@@ -11,34 +11,28 @@ namespace fs = std::filesystem;
 #include "yaml-cpp/yaml.h"
 
 struct LocalConfig {
+    fs::path sourceDir;
     fs::path remoteDir;
 
-    void print() const {
-        std::cout << "LocalConfig: " << '\n'
-                  << "    remoteDir: " << remoteDir << '\n';
-    }
+    void print() const;
+    void sync() const;
 };
 
 struct SSHConfig {
+    fs::path sourceDir;
     fs::path remoteDir;
     std::string hostname;
     std::string username;
     fs::path privateKey;
     std::string password;
 
-    void print() const {
-        std::cout << "SSHConfig: " << '\n'
-                  << "    remoteDir: " << remoteDir << '\n'
-                  << "    hostname: " << hostname << '\n'
-                  << "    username: " << username << '\n'
-                  << "    privateKey: " << privateKey << '\n'
-                  << "    password: " << password << '\n';
-    }
+    void print() const;
+    void sync() const;
 };
 
 using RemoteConfig = std::variant<LocalConfig, SSHConfig>;
 using RemoteConfigVector = std::vector<RemoteConfig>;
 
-RemoteConfig RemoteConfigFactory(const YAML::Node &remote);
+RemoteConfig RemoteConfigFactory(const fs::path &sourceDir, const YAML::Node &remote);
 
 #endif

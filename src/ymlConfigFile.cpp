@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 #include "yaml-cpp/yaml.h"
 #include "config.hpp"
 
-ymlConfigFile::ymlConfigFile(const fs::path &configFile) {
+ymlConfigFile::ymlConfigFile(const fs::path &configFile) : _configPath(configFile) {
     YAML::Node config = YAML::LoadFile(configFile);
 
     // Check that the file is stuctures as a list of maps
@@ -24,7 +24,7 @@ ymlConfigFile::ymlConfigFile(const fs::path &configFile) {
             std::cerr << "Incorrect file structure, remote definition should be a map!\n";
             std::exit(1);
         }
-        _remotes.push_back(RemoteConfigFactory(remote));
+        _remotes.push_back(RemoteConfigFactory(_configPath.parent_path(), remote));
     }
 }
 
