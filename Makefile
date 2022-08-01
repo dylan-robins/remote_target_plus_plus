@@ -11,21 +11,21 @@ CC := g++
 # Preprocessor flags
 CPPFLAGS := 
 # gcc flags
-CFLAGS := -g -std=c++17 -Ilib/ -Ilib/argparse/include
+CFLAGS := -g -std=c++17 -Ilib/ -Ilib/argparse/include -Ilib/ -Ilib/yaml-cpp/include
 # Linker flags
-LDFLAGS := #-static -static-libgcc -static-libstdc++
+LDFLAGS := -static -static-libgcc -static-libstdc++
 # Linker libraries
 LDLIBS :=
 
 # FILES
-SRC  := $(patsubst %, $(SRC_DIR)/%, main.cpp rsync.cpp remoteConfig.cpp)
+SRC  := $(patsubst %, $(SRC_DIR)/%, main.cpp config.cpp ymlConfigFile.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 
 
 all: $(BUILD_DIR) $(OBJ_DIR) $(BUILD_DIR)/$(PROJECT_NAME)
 
 # BUILD MAIN PROGRAM
-$(BUILD_DIR)/$(PROJECT_NAME): $(OBJS)
+$(BUILD_DIR)/$(PROJECT_NAME): $(OBJS) $(LIB_DIR)/yaml-cpp/build/libyaml-cpp.a
 	$(CC) $(LDFLAGS) $(LDLIBS) -Wall -o $@ $^
 
 # BUILD LIBRARIES

@@ -3,52 +3,42 @@
 #define __DIREPLICATE__CONFIIG_HPP__
 
 #include <filesystem>
+#include <iostream>
+#include <variant>
 #include <vector>
 namespace fs = std::filesystem;
 
-#include "inih/cpp/INIReader.h"
+#include "yaml-cpp/yaml.h"
 
-// Abstract base struct
-struct RemoteConfig {
-    enum RemoteConfigType { LOCAL,
-                            SSH };
+struct LocalConfig {
     fs::path remoteDir;
-    RemoteConfigType type;
-    RemoteConfig(RemoteConfigType type, fs::path remoteDir) : type(type), remoteDir(remoteDir) {}
-    virtual ~RemoteConfig() {}
+
+    void print() const {
+        std::cout << "LocalConfig: " << '\n'
+                  << "    remoteDir: " << remoteDir << '\n';
+    }
 };
 
-typedef std::vector<std::shared_ptr<RemoteConfig>> RemoteConfigVector;
-
-struct LocalConfig : public RemoteConfig {
-    LocalConfig(fs::path remoteDir) : RemoteConfig(RemoteConfigType::LOCAL, remoteDir) {}
-};
-
-struct SSHConfig : public RemoteConfig {
+struct SSHConfig {
+    fs::path remoteDir;
     std::string hostname;
     std::string username;
     fs::path privateKey;
     std::string password;
 
-    SSHConfig(
-        fs::path remoteDir,
-        std::string hostname,
-        std::string username,
-        fs::path privateKey,
-        std::string password) : RemoteConfig(RemoteConfigType::SSH, remoteDir),
-                                hostname(hostname),
-                                username(username),
-                                privateKey(privateKey),
-                                password(password) {}
+    void print() const {
+        std::cout << "SSHConfig: " << '\n'
+                  << "    remoteDir: " << remoteDir << '\n'
+                  << "    hostname: " << hostname << '\n'
+                  << "    username: " << username << '\n'
+                  << "    privateKey: " << privateKey << '\n'
+                  << "    password: " << password << '\n';
+    }
 };
 
-class ConfigFile {
-  private:
-    fs::path _configPath;
+using RemoteConfig = std::variant<LocalConfig, SSHConfig>;
+using RemoteConfigVector = std::vector<RemoteConfig>;
 
-  public:
-    ConfigFile(std::string &path);
-    fs::path rootDir() const;
-    RemoteConfigVector load() const;
-};
+RemoteConfig RemoteConfigFactory(const YAML::Node &remote);
+
 #endif

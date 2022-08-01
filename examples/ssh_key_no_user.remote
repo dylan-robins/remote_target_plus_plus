@@ -1,4 +1,3 @@
-[[REMOTES]]
-type = "SSH"
-hostname = '192.168.1.100'
-remote_dir = '~/direplicate'
+- type: SSH
+  hostname: 192.168.1.100
+  remote_dir: ~/direplicate

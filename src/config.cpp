@@ -1,51 +1,41 @@
 #include "config.hpp"
+#include "yaml-cpp/yaml.h"
 
 #include <filesystem>
 #include <iostream>
 #include <string>
-#include <vector>
 namespace fs = std::filesystem;
 
-#include "inih/cpp/INIReader.h"
 
-ConfigFile::ConfigFile(std::string &path) {
-    _configPath = path;
-    if (!fs::exists(_configPath)) {
-        std::cerr << "Can't load config file '" << _configPath << "'\n";
-        std::cerr << "File doesn't exist\n";
+static std::string getRequiredYAMLNodeValue(const YAML::Node &remote, const std::string key) {
+    if (!remote[key]) {
+        std::cerr << "Missing key '" << key << "' from remote config!\n";
         std::exit(1);
     }
+    return remote[key].as<std::string>();
+}
+static std::string getOptionalYAMLNodeValue(const YAML::Node &remote, const std::string key) {
+    return remote[key].as<std::string>("");
 }
 
-fs::path ConfigFile::rootDir() const {
-    return _configPath.parent_path();
-}
+RemoteConfig RemoteConfigFactory(const YAML::Node &remote) {
+    // Check remote type
+    auto remoteType = getRequiredYAMLNodeValue(remote, "type");
 
-RemoteConfigVector ConfigFile::load() const {
-    RemoteConfigVector configs;
-
-    INIReader reader(_configPath);
-
-    if (reader.ParseError() < 0) {
-        std::cerr << "Can't load '" << _configPath << "'\n";
-        return configs;
+    if (remoteType == "LOCAL") {
+        LocalConfig conf{
+            getRequiredYAMLNodeValue(remote, "remote_dir")};
+        return conf;
+    } else if (remoteType == "SSH") {
+        SSHConfig conf{
+            getRequiredYAMLNodeValue(remote, "remote_dir"),
+            getRequiredYAMLNodeValue(remote, "hostname"),
+            getOptionalYAMLNodeValue(remote, "username"),
+            getOptionalYAMLNodeValue(remote, "privateKey"),
+            getOptionalYAMLNodeValue(remote, "password")};
+        return conf;
+    } else {
+        std::cerr << "Unknown remote type '" << remoteType << "'!\n";
+        std::exit(1);
     }
-
-    for (auto section : reader.GetSections()) {
-        if (section == "LOCAL") {
-            fs::path remoteDir = reader.Get("LOCAL", "RemoteDir", "");
-            configs.push_back(
-                std::shared_ptr<RemoteConfig>(new LocalConfig(remoteDir)));
-        } else if (section == "SSH") {
-            std::string hostname = reader.Get("SSH", "Hostname", "");
-            std::string username = reader.Get("SSH", "Username", "");
-            std::string password = reader.Get("SSH", "Password", "");
-            fs::path privateKey = reader.Get("SSH", "PrivateKey", "");
-            fs::path remoteDir = reader.Get("SSH", "RemoteDir", "");
-
-            configs.push_back(
-                std::shared_ptr<RemoteConfig>(new SSHConfig(remoteDir, hostname, username, privateKey, password)));
-        }
-    }
-    return configs;
 }

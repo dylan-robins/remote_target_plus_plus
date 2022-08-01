@@ -3,10 +3,9 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
-#include "rsync.hpp"
 #include "argparse/argparse.hpp"
 
-#include "remoteConfig.hpp"
+#include "ymlConfigFile.hpp"
 
 int main(int argc, const char *argv[]) {
     argparse::ArgumentParser program("direplicate", "1.0.0");
@@ -23,9 +22,12 @@ int main(int argc, const char *argv[]) {
         std::exit(1);
     }
 
-    std::string pathToConfig = program.get<std::string>("config");
-    remoteConfigs remoteConfigs(pathToConfig);
-    remoteConfigs.print();
+    fs::path configFile(program.get<std::string>("config"));
+
+    std::string pathToConfig = configFile.string();
+    ymlConfigFile ymlConfigFile(pathToConfig);
+    ymlConfigFile.runReplications(configFile.parent_path().string());
+    ymlConfigFile.print();
 
     return 0;
 }

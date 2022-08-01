@@ -1,3 +1,2 @@
-[[REMOTES]]
-type = "LOCAL"
-remote_dir = '/tmp/direplicate'
+- type: LOCAL
+  remote_dir: /tmp/direplicate
