@@ -27,7 +27,6 @@ int main(int argc, const char *argv[]) {
     std::string pathToConfig = configFile.string();
     ymlConfigFile ymlConfigFile(pathToConfig);
     ymlConfigFile.runReplications(configFile.parent_path().string());
-    ymlConfigFile.print();
 
     return 0;
 }

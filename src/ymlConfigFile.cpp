@@ -30,26 +30,12 @@ ymlConfigFile::ymlConfigFile(const fs::path &configFile) : _configPath(configFil
 
 void ymlConfigFile::print() const {
     for (auto remote : _remotes) {
-        auto* localConfig  = std::get_if<LocalConfig>(&remote);
-        if (localConfig) {
-            localConfig->print();
-        }
-        auto* sshConfig  = std::get_if<SSHConfig>(&remote);
-        if (sshConfig) {
-            sshConfig->print();
-        }
+        remote->print();
     }
 }
 
 void ymlConfigFile::runReplications(const fs::path &source_dir) const {
     for (auto remote : _remotes) {
-        auto* localConfig  = std::get_if<LocalConfig>(&remote);
-        if (localConfig) {
-            std::cout << "- Running rsync for Local config\n";
-        }
-        auto* sshConfig  = std::get_if<SSHConfig>(&remote);
-        if (sshConfig) {
-            std::cout << "- Running rsync for SSH config\n";
-        }
+        remote->sync();
     }
 }

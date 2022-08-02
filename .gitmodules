@@ -1,15 +1,9 @@
-[submodule "lib/inih"]
-	path = lib/inih
-	url = https://github.com/Blandinium/inih.git
 [submodule "lib/argparse"]
 	path = lib/argparse
 	url = https://github.com/p-ranav/argparse.git
-[submodule "lib/cpp-subprocess"]
-	path = lib/cpp-subprocess
-	url = https://github.com/arun11299/cpp-subprocess.git
-[submodule "lib/tomlplusplus"]
-	path = lib/tomlplusplus
-	url = https://github.com/marzer/tomlplusplus.git
 [submodule "lib/yaml-cpp"]
 	path = lib/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
+[submodule "lib/pstreams"]
+	path = lib/pstreams
+	url = git://git.code.sf.net/p/pstreams/code

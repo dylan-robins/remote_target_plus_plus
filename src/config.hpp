@@ -10,29 +10,38 @@ namespace fs = std::filesystem;
 
 #include "yaml-cpp/yaml.h"
 
-struct LocalConfig {
+struct RemoteConfig {
+    virtual void print() const = 0;
+    virtual void sync() const = 0;
+};
+
+struct LocalConfig : public RemoteConfig {
     fs::path sourceDir;
     fs::path remoteDir;
 
-    void print() const;
-    void sync() const;
+    LocalConfig(fs::path sourceDir, fs::path remoteDir)
+        : sourceDir(sourceDir), remoteDir(remoteDir){};
+
+    void print() const override;
+    void sync() const override;
 };
 
-struct SSHConfig {
+struct SSHConfig : public RemoteConfig {
     fs::path sourceDir;
     fs::path remoteDir;
     std::string hostname;
     std::string username;
     fs::path privateKey;
-    std::string password;
 
-    void print() const;
-    void sync() const;
+    SSHConfig(fs::path sourceDir, fs::path remoteDir, std::string hostname, std::string username, fs::path privateKey)
+        : sourceDir(sourceDir), remoteDir(remoteDir), hostname(hostname), username(username), privateKey(privateKey){};
+
+    void print() const override;
+    void sync() const override;
 };
 
-using RemoteConfig = std::variant<LocalConfig, SSHConfig>;
-using RemoteConfigVector = std::vector<RemoteConfig>;
+using RemoteConfigVector = std::vector<std::shared_ptr<RemoteConfig>>;
 
-RemoteConfig RemoteConfigFactory(const fs::path &sourceDir, const YAML::Node &remote);
+std::shared_ptr<RemoteConfig> RemoteConfigFactory(const fs::path &sourceDir, const YAML::Node &remote);
 
 #endif

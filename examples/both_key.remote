@@ -1,8 +1,0 @@
-- type: SSH
-  hostname: 192.168.1.102
-  username: dylan
-  private_key: ~/.ssh/id_rsa
-  remote_dir: ~/direplicate
-
-- type: LOCAL
-  remote_dir: /tmp/direplicate
