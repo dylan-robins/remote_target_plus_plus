@@ -34,8 +34,8 @@ void ymlConfigFile::print() const {
     }
 }
 
-void ymlConfigFile::runReplications(const fs::path &source_dir) const {
+void ymlConfigFile::runReplications(const fs::path &source_dir, const bool dry_run) const {
     for (auto remote : _remotes) {
-        remote->sync();
+        remote->sync(dry_run);
     }
 }

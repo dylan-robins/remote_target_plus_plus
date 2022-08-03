@@ -1,0 +1,2 @@
+- type: LOCAL
+  remote_dir: /tmp/remote_target_pp

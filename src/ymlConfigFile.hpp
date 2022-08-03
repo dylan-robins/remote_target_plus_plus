@@ -20,7 +20,7 @@ class ymlConfigFile {
 
     void print() const;
 
-    void runReplications(const fs::path &source_dir) const;
+    void runReplications(const fs::path &source_dir, const bool dry_run = false) const;
 };
 
 #endif

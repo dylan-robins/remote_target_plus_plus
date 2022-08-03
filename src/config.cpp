@@ -58,7 +58,7 @@ void LocalConfig::print() const {
               << "sourceDir: " << sourceDir << '\n'
               << "remoteDir: " << remoteDir << '\n';
 }
-void LocalConfig::sync() const {
+void LocalConfig::sync(const bool dry_run) const {
     print();
 
     std::vector<std::string> cmd({"rsync",
@@ -66,6 +66,8 @@ void LocalConfig::sync() const {
                                   "--mkpath",
                                   resolve_path(sourceDir).string(),
                                   resolve_path(remoteDir).string()});
+    if (dry_run)
+        cmd.push_back("-n");
 
     std::cout << "### Command executed: ";
     for (auto part : cmd) {
@@ -86,10 +88,12 @@ void SSHConfig::print() const {
               << "username: " << username << '\n'
               << "privateKey: " << privateKey << '\n';
 }
-void SSHConfig::sync() const {
+void SSHConfig::sync(const bool dry_run) const {
     print();
 
     std::vector<std::string> cmd({"rsync", "-avzh", "--mkpath"});
+    if (dry_run)
+        cmd.push_back("-n");
 
     // If SSH private key is provided, insert it into the command
     if (privateKey.string() != "") {

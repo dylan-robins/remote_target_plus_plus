@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 struct RemoteConfig {
     virtual void print() const = 0;
-    virtual void sync() const = 0;
+    virtual void sync(const bool dry_run = false) const = 0;
 };
 
 struct LocalConfig : public RemoteConfig {
@@ -23,7 +23,7 @@ struct LocalConfig : public RemoteConfig {
         : sourceDir(sourceDir), remoteDir(remoteDir){};
 
     void print() const override;
-    void sync() const override;
+    void sync(const bool dry_run = false) const override;
 };
 
 struct SSHConfig : public RemoteConfig {
@@ -37,7 +37,7 @@ struct SSHConfig : public RemoteConfig {
         : sourceDir(sourceDir), remoteDir(remoteDir), hostname(hostname), username(username), privateKey(privateKey){};
 
     void print() const override;
-    void sync() const override;
+    void sync(const bool dry_run = false) const override;
 };
 
 using RemoteConfigVector = std::vector<std::shared_ptr<RemoteConfig>>;

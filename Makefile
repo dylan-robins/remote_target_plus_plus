@@ -1,4 +1,5 @@
 PROJECT_NAME := remote_target
+PROJECT_VERSION := 1.0.0
 
 # PATHS
 BUILD_DIR := ./build
