@@ -93,9 +93,11 @@ In order to build the tool you'll need a compiler compatible with C++17 and make
 
 ### Installation
 
-1. Clone the repo
+Building the source code on a Unix-like environment with g++ and make is exceptionally easy:
+
+1. Clone the repo with it's submodules
    ```
-   git clone https://github.com/dylan-robins/remote_target_plus_plus
+   git clone --recurse-submodules https://github.com/dylan-robins/remote_target_plus_plus
    cd remote_target_plus_plus
    ```
 2. Build the software
@@ -103,7 +105,7 @@ In order to build the tool you'll need a compiler compatible with C++17 and make
    make
    ```
 
-That's it!
+That's it! If you want to use a different compiler, or change the compilation options, just edit the Makefile. I should learn to use automake or cmake at some point, but this project is simple enough.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -169,4 +171,4 @@ Distributed under the MIT License. See [LICENCE][license-url] for more informati
 [releases-url]: https://github.com/dylan-robins/remote_target_plus_plus/releases
 [releases-shield]: https://img.shields.io/github/release-date/dylan-robins/remote_target_plus_plus?style=for-the-badge
 [license-url]: https://github.com/dylan-robins/remote_target_plus_plus/blob/master/LICENSE
-[usage_example]: img/usage_example.png
+[usage_example]: img/demo.png
