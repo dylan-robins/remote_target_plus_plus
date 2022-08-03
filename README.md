@@ -118,7 +118,8 @@ Usage: remote_target [options]
 Optional arguments:
 -h --help       shows help message and exits [default: false]
 -v --version    prints version information and exits [default: false]
---config        Path to a configuration file [default: "examples/both.remote_target"]
+--config        Path to a configuration file
+--dry-run       If present, doesn't actually run the replication [default: false]
 ```
 
 Example usage:  
