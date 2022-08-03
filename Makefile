@@ -11,7 +11,7 @@ CC := g++
 # Preprocessor flags
 CPPFLAGS := 
 # gcc flags
-CFLAGS := -g -std=c++17 -Ilib/ -Ilib/argparse/include -Ilib/ -Ilib/yaml-cpp/include
+CFLAGS := -g -std=c++17 -Ilib/ -Ilib/argparse/include -Ilib/ -Ilib/yaml-cpp/include -DPROJECT_NAME='"$(PROJECT_NAME)"'
 # Linker flags
 LDFLAGS := -static -static-libgcc -static-libstdc++
 # Linker libraries
@@ -45,7 +45,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 test: $(BUILD_DIR)/$(PROJECT_NAME)
-	for ex in examples/*.remote;\
+	for ex in examples/*.remote_target;\
 	do\
 		echo "############### Running $$ex ###############" ;\
 		$(BUILD_DIR)/$(PROJECT_NAME) --config $$ex;\

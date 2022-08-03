@@ -7,12 +7,16 @@ namespace fs = std::filesystem;
 
 #include "ymlConfigFile.hpp"
 
+#ifndef PROJECT_NAME
+#define PROJECT_NAME "remote_target"
+#endif
+
 int main(int argc, const char *argv[]) {
-    argparse::ArgumentParser program("direplicate", "1.0.0");
+    argparse::ArgumentParser program(PROJECT_NAME, "1.0.0");
 
     program.add_argument("--config")
         .help("Path to a configuration file")
-        .default_value(std::string{"examples/both_key.remote"});
+        .default_value(std::string{"examples/both.remote_target"});
 
     try {
         program.parse_args(argc, argv);

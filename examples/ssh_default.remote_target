@@ -1,0 +1,3 @@
+- type: SSH
+  hostname: 192.168.1.102
+  remote_dir: ~/direplicate
